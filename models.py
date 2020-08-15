@@ -1,9 +1,14 @@
-from sqlalchemy import Column, String, create_engine
+from sqlalchemy import Column, String, create_engine, Integer
 from flask_sqlalchemy import SQLAlchemy
 import json
 import os
 
-database_path = os.environ['DATABASE_URL']
+# database_path = os.environ['DATABASE_URL']
+
+database_path = os.environ.get('DATABASE_URL')
+if not database_path:
+    database_path = "postgresql://khalil@localhost:5432/test_heroku"
+
 
 db = SQLAlchemy()
 
@@ -24,18 +29,19 @@ Person
 Have title and release year
 '''
 class Person(db.Model):
-  __tablename__ = 'People'
+    __tablename__ = 'People'
 
-  id = Column(Integer, primary_key=True)
-  name = Column(String)
-  catchphrase = Column(String)
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    catchphrase = Column(String)
+    bober = Column(Integer)
 
-  def __init__(self, name, catchphrase=""):
-    self.name = name
-    self.catchphrase = catchphrase
+    def __init__(self, name, catchphrase=""):
+      self.name = name
+      self.catchphrase = catchphrase
 
-  def format(self):
-    return {
-      'id': self.id,
-      'name': self.name,
-      'catchphrase': self.catchphrase}
+    def format(self):
+      return {
+        'id': self.id,
+        'name': self.name,
+        'catchphrase': self.catchphrase}
